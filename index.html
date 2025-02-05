@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Alaina Live!</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="favicon.png" type="image/png">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -16,6 +18,11 @@
         .container {
             max-width: 600px;
             margin: auto;
+        }
+        h1 {
+            font-family: 'Lobster', cursive;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 5px rgba(255, 255, 255, 0.3);
         }
         .stations {
             display: grid;
@@ -36,15 +43,17 @@
         #station2 { background-image: url('1072.png'); }
         #station3 { background-image: url('1042.jpg'); }
         #station4 { background-image: url('1061.png'); }
-        .overlay {
+        .icon-overlay {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
+            font-size: 3em;
+            color: rgba(255, 255, 255, 0.8);
+        }
+        .status-text {
+            margin-top: 5px;
+            font-size: 0.9em;
         }
     </style>
 </head>
@@ -53,16 +62,20 @@
         <h1>Alaina Live</h1>
         <div class="stations">
             <div class="station-card" id="station1" data-src="https://centova.aarenworld.com/proxy/894tamilfm/stream">
-                <div class="overlay">89.4 Tamil FM</div>
+                <div class="icon-overlay">▶</div>
+                <div class="status-text" id="status1">Idle</div>
             </div>
             <div class="station-card" id="station2" data-src="https://stream.aiir.com/dbv0rxpwp6ytv">
-                <div class="overlay">Live 107.2 FM</div>
+                <div class="icon-overlay">▶</div>
+                <div class="status-text" id="status2">Idle</div>
             </div>
             <div class="station-card" id="station3" data-src="https://playerservices.streamtheworld.com/api/livestream-redirect/BAH_HIN_GST.mp3">
-                <div class="overlay">Radio Mirchi Bahrain</div>
+                <div class="icon-overlay">▶</div>
+                <div class="status-text" id="status3">Idle</div>
             </div>
             <div class="station-card" id="station4" data-src="STREAM_URL_4">
-                <div class="overlay">Holy Quran</div>
+                <div class="icon-overlay">▶</div>
+                <div class="status-text" id="status4">Idle</div>
             </div>
         </div>
     </div>
@@ -71,22 +84,51 @@
         document.addEventListener("DOMContentLoaded", function () {
             const audio = document.getElementById("radioPlayer");
             let currentStation = null;
+            let currentIcon = null;
+            let currentStatus = null;
             
-            document.querySelectorAll(".station-card").forEach(card => {
+            document.querySelectorAll(".station-card").forEach((card, index) => {
+                const icon = card.querySelector(".icon-overlay");
+                const status = document.getElementById(`status${index + 1}`);
+                
                 card.addEventListener("click", function () {
                     const streamUrl = this.getAttribute("data-src");
                     
                     if (currentStation === streamUrl) {
                         if (!audio.paused) {
                             audio.pause();
+                            icon.textContent = "▶";
+                            status.textContent = "Paused";
                         } else {
                             audio.play();
+                            icon.textContent = "⏸";
+                            status.textContent = "Playing";
                         }
                     } else {
+                        if (currentIcon) currentIcon.textContent = "▶";
+                        if (currentStatus) currentStatus.textContent = "Idle";
+                        
                         audio.src = streamUrl;
                         audio.play();
+                        icon.textContent = "⏸";
+                        status.textContent = "Buffering...";
+                        
                         currentStation = streamUrl;
+                        currentIcon = icon;
+                        currentStatus = status;
                     }
+                });
+                
+                audio.addEventListener("playing", function () {
+                    if (currentStatus) currentStatus.textContent = "Playing";
+                });
+                
+                audio.addEventListener("waiting", function () {
+                    if (currentStatus) currentStatus.textContent = "Buffering...";
+                });
+                
+                audio.addEventListener("error", function () {
+                    if (currentStatus) currentStatus.textContent = "Stream Unavailable";
                 });
             });
         });
