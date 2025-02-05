@@ -38,11 +38,22 @@
             background-position: center;
             border-radius: 10px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
-        #station1 { background-image: url('894.jpg'); }
-        #station2 { background-image: url('1072.png'); }
-        #station3 { background-image: url('1042.jpg'); }
-        #station4 { background-image: url('1061.png'); }
+        .station-card.active::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8));
+            border-radius: 10px;
+        }
         .icon-overlay {
             position: absolute;
             top: 50%;
@@ -52,9 +63,23 @@
             color: rgba(255, 255, 255, 0.8);
         }
         .status-text {
-            margin-top: 5px;
+            top: 60%;
             font-size: 0.9em;
+            position: absolute;
+            left: 45%;
+display:none;
         }
+        .station-card.active .icon-overlay {
+            display: block;
+        }
+        
+        .station-card.active .status-text {
+            display: block;
+        }
+#station1 { background-image: url('894.jpg'); }
+        #station2 { background-image: url('1072.png'); }
+        #station3 { background-image: url('1042.jpg'); }
+        #station4 { background-image: url('1061.png'); }
     </style>
 </head>
 <body>
@@ -84,6 +109,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             const audio = document.getElementById("radioPlayer");
             let currentStation = null;
+            let currentCard = null;
             let currentIcon = null;
             let currentStatus = null;
             
@@ -105,15 +131,20 @@
                             status.textContent = "Playing";
                         }
                     } else {
-                        if (currentIcon) currentIcon.textContent = "▶";
-                        if (currentStatus) currentStatus.textContent = "Idle";
+                        if (currentCard) {
+                            currentCard.classList.remove("active");
+                            currentIcon.textContent = "▶";
+                            currentStatus.textContent = "Idle";
+                        }
                         
+                        this.classList.add("active");
                         audio.src = streamUrl;
                         audio.play();
                         icon.textContent = "⏸";
                         status.textContent = "Buffering...";
                         
                         currentStation = streamUrl;
+                        currentCard = this;
                         currentIcon = icon;
                         currentStatus = status;
                     }
