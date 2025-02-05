@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Alaina Live!</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #222;
+            color: white;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+        }
+        .stations {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .station-card {
+            position: relative;
+            width: 100%;
+            padding-top: 100%;
+            background-size: cover;
+            background-position: center;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        #station1 { background-image: url('894.jpg'); }
+        #station2 { background-image: url('1072.png'); }
+        #station3 { background-image: url('1042.jpg'); }
+        #station4 { background-image: url('1061.png'); }
+        .overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.6);
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Live Radio</h1>
+        <div class="stations">
+            <div class="station-card" id="station1" data-src="https://centova.aarenworld.com/proxy/894tamilfm/stream">
+                <div class="overlay">89.4 Tamil FM</div>
+            </div>
+            <div class="station-card" id="station2" data-src="https://stream.aiir.com/dbv0rxpwp6ytv">
+                <div class="overlay">Live 107.2 FM</div>
+            </div>
+            <div class="station-card" id="station3" data-src="https://playerservices.streamtheworld.com/api/livestream-redirect/BAH_HIN_GST.mp3">
+                <div class="overlay">Radio Mirchi Bahrain</div>
+            </div>
+            <div class="station-card" id="station4" data-src="STREAM_URL_4">
+                <div class="overlay">Holy Quran</div>
+            </div>
+        </div>
+    </div>
+    <audio id="radioPlayer"></audio>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const audio = document.getElementById("radioPlayer");
+            let currentStation = null;
+            
+            document.querySelectorAll(".station-card").forEach(card => {
+                card.addEventListener("click", function () {
+                    const streamUrl = this.getAttribute("data-src");
+                    
+                    if (currentStation === streamUrl) {
+                        if (!audio.paused) {
+                            audio.pause();
+                        } else {
+                            audio.play();
+                        }
+                    } else {
+                        audio.src = streamUrl;
+                        audio.play();
+                        currentStation = streamUrl;
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
