@@ -38,22 +38,35 @@
             background-position: center;
             border-radius: 10px;
             cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
         }
-        #station1 { background-image: url('894.jpg'); }
-        #station2 { background-image: url('1072.png'); }
-        #station3 { background-image: url('1042.jpg'); }
-        #station4 { background-image: url('1061.png'); }
+        .station-card::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8));
+            border-radius: 10px;
+        }
         .icon-overlay {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
             font-size: 3em;
             color: rgba(255, 255, 255, 0.8);
+            z-index: 2;
         }
         .status-text {
-            margin-top: 5px;
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            color: white;
             font-size: 0.9em;
+            z-index: 2;
         }
     </style>
 </head>
