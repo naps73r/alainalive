@@ -44,7 +44,7 @@
             position: relative;
             overflow: hidden;
         }
-        .station-card::after {
+        .station-card.active::after {
             content: "";
             position: absolute;
             top: 0;
@@ -59,6 +59,10 @@
             font-size: 3em;
             color: rgba(255, 255, 255, 0.8);
             z-index: 2;
+            display: none;
+        }
+        .station-card.active .icon-overlay {
+            display: block;
         }
         .status-text {
             position: absolute;
@@ -67,6 +71,10 @@
             color: white;
             font-size: 0.9em;
             z-index: 2;
+            display: none;
+        }
+        .station-card.active .status-text {
+            display: block;
         }
     </style>
 </head>
@@ -97,6 +105,7 @@
         document.addEventListener("DOMContentLoaded", function () {
             const audio = document.getElementById("radioPlayer");
             let currentStation = null;
+            let currentCard = null;
             let currentIcon = null;
             let currentStatus = null;
             
@@ -118,15 +127,20 @@
                             status.textContent = "Playing";
                         }
                     } else {
-                        if (currentIcon) currentIcon.textContent = "▶";
-                        if (currentStatus) currentStatus.textContent = "Idle";
+                        if (currentCard) {
+                            currentCard.classList.remove("active");
+                            currentIcon.textContent = "▶";
+                            currentStatus.textContent = "Idle";
+                        }
                         
+                        this.classList.add("active");
                         audio.src = streamUrl;
                         audio.play();
                         icon.textContent = "⏸";
                         status.textContent = "Buffering...";
                         
                         currentStation = streamUrl;
+                        currentCard = this;
                         currentIcon = icon;
                         currentStatus = status;
                     }
