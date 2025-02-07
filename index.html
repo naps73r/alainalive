@@ -105,31 +105,31 @@
     <div class="container">
         <h1>Alaina Live</h1>
         <div class="stations">
-            <div class="station-card" id="station1" data-src="https://centova.aarenworld.com/proxy/894tamilfm/stream" data-name="89.4 Tamil FM">
+            <div class="station-card" id="station1" data-src="https://centova.aarenworld.com/proxy/894tamilfm/stream" data-region="UAE" data-name="89.4 Tamil FM">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status1">Idle</div>
             </div>
-            <div class="station-card" id="station2" data-src="https://stream.aiir.com/dbv0rxpwp6ytv" data-name="107.2 Live FM">
+            <div class="station-card" id="station2" data-src="https://stream.aiir.com/dbv0rxpwp6ytv" data-region="BAH" data-name="107.2 Live FM">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status2">Idle</div>
             </div>
-            <div class="station-card" id="station3" data-src="https://playerservices.streamtheworld.com/api/livestream-redirect/BAH_HIN_GST.mp3" data-name="Radio Mirchi 104.2 FM">
+            <div class="station-card" id="station3" data-src="https://playerservices.streamtheworld.com/api/livestream-redirect/BAH_HIN_GST.mp3" data-region="BAH" data-name="Radio Mirchi 104.2 FM">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status3">Idle</div>
             </div>
-            <div class="station-card" id="station4" data-src="STREAM_URL_4" data-name="Station 4">
+            <div class="station-card" id="station4" data-src="STREAM_URL_4" data-region="BAH" data-name="Station 4">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status4">Idle</div>
             </div>
-	    <div class="station-card" id="station5" data-src="https://mbc.thestreamtech.com:8086/index.html/stream" data-name="Shakthi FM SL">
+	    <div class="station-card" id="station5" data-src="https://mbc.thestreamtech.com:8086/index.html/stream" data-region="SL" data-name="Shakthi FM SL">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status5">Idle</div>
             </div>
-	    <div class="station-card" id="station6" data-src="https://eu10.fastcast4u.com/clubfmuae" data-name="Radio Mango Kochi">
+	    <div class="station-card" id="station6" data-src="https://eu10.fastcast4u.com/clubfmuae" data-region="IND" data-name="Radio Mango Kochi">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status6">Idle</div>
             </div>
-	   <div class="station-card" id="station7" data-src="https://stream.aiir.com/uejfkn0dchcuv" data-name="Radio Bahrain">
+	   <div class="station-card" id="station7" data-src="https://stream.aiir.com/uejfkn0dchcuv" data-region="BAH" data-name="Radio Bahrain">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status7">Idle</div>
             </div>
@@ -139,6 +139,12 @@
     <audio id="radioPlayer" preload="none"></audio>
 
     <script>
+const flagMap = {
+    "BAH": "🇧🇭",
+    "UAE": "🇦🇪",
+    "IND": "🇮🇳",
+    "SL": "🇱🇰"
+};
         document.addEventListener("DOMContentLoaded", function () {
             const audio = document.getElementById("radioPlayer");
             let currentStation = null;
@@ -154,7 +160,8 @@
                 card.addEventListener("click", function () {
                     const streamUrl = this.getAttribute("data-src");
                     const stationName = this.getAttribute("data-name");
-
+		    const region = this.getAttribute("data-region");
+			const flagEmoji = flagMap[region] || ""; 
                     if (currentStation === streamUrl) {
                         if (!audio.paused) {
                             audio.pause();
@@ -165,7 +172,11 @@
                             audio.play();
                             icon.textContent = "⏸";
                             status.textContent = "Playing";
-document.title = `🎵 Now Playing: ${stationName} ${stationName.includes("89.4") ? "🇦🇪" : "🇧🇭"} | Alaina Live`;
+
+
+document.title = `🎵 Now Playing: ${stationName} ${flagEmoji} | Alaina Live`;
+
+			    
 
 
                         }
@@ -181,7 +192,8 @@ document.title = `🎵 Now Playing: ${stationName} ${stationName.includes("89.4"
                         audio.play();
                         icon.textContent = "⏸";
                         status.textContent = "Buffering...";
-                        document.title = `🎵 Now Playing: ${stationName} ${stationName.includes("89.4") ? "🇦🇪" : "🇧🇭"} | Alaina Live`;
+                        document.title = `🎵 Now Playing: ${stationName} ${flagEmoji} | Alaina Live`;
+
 
                         currentStation = streamUrl;
                         currentCard = this;
