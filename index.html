@@ -49,12 +49,14 @@
             justify-content: center;
             overflow: hidden;
             transition: transform 0.1s ease-in-out;
+
         }
 
         .station-card.active::after {
+
             transform: scale(0.98);
-            content: "";
-            background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
+		content: "";
+		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
         }
 
         .station-card::after {
@@ -96,29 +98,30 @@
         #station3 { background-image: url('1042.jpg'); }
         #station4 { background-image: url('1061.png'); }
         #station5 { background-image: url('shakthi.png'); }
-        #station6 { background-image: url('radio-mango.jpg'); }
-        #station7 { background-image: url('radio-bahrain.jpg'); }
+	#station6 { background-image: url('radio-mango.jpg'); }
+	#station7 { background-image: url('radio-bahrain.jpg'); }
 
-        #nowPlayingContainer {
-            text-align: center;
-            margin: 20px auto;
-        }
 
-        #coverArt {
-            width: 150px;
-            height: 150px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
-        }
+#nowPlayingContainer {
+    text-align: center;
+    margin: 20px auto;
+}
+
+#coverArt {
+    width: 150px;
+    height: 150px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
+}
     </style>
 </head>
 <body>
     <div class="container">
         <h1>Alaina Live</h1>
-        <div id="nowPlayingContainer">
-            <img id="coverArt" src="default-cover.jpg" alt="Cover Art">
-            <p id="nowPlayingText">Now Playing: </p>
-        </div>
+<div id="nowPlayingContainer">
+    <img id="coverArt" src="default-cover.jpg" alt="Cover Art">
+    <p id="nowPlayingText">Now Playing: </p>
+</div>
         <div class="stations">
             <div class="station-card" id="station1" data-src="https://centova.aarenworld.com/proxy/894tamilfm/stream" data-region="UAE" data-name="89.4 Tamil FM">
                 <div class="icon-overlay">▶</div>
@@ -136,75 +139,74 @@
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status4">Idle</div>
             </div>
-            <div class="station-card" id="station5" data-src="https://mbc.thestreamtech.com:8086/index.html/stream" data-region="SL" data-name="Shakthi FM SL">
+	    <div class="station-card" id="station5" data-src="https://mbc.thestreamtech.com:8086/index.html/stream" data-region="SL" data-name="Shakthi FM SL">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status5">Idle</div>
             </div>
-            <div class="station-card" id="station6" data-src="https://eu10.fastcast4u.com/clubfmuae" data-region="IND" data-name="Radio Mango Kochi">
+	    <div class="station-card" id="station6" data-src="https://eu10.fastcast4u.com/clubfmuae" data-region="IND" data-name="Radio Mango Kochi">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status6">Idle</div>
             </div>
-            <div class="station-card" id="station7" data-src="https://stream.aiir.com/uejfkn0dchcuv" data-region="BAH" data-name="Radio Bahrain">
+	   <div class="station-card" id="station7" data-src="https://stream.aiir.com/uejfkn0dchcuv" data-region="BAH" data-name="Radio Bahrain">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status7">Idle</div>
             </div>
+
         </div>
     </div>
     <audio id="radioPlayer" preload="none"></audio>
 
-    <script src="https://cdn.jsdelivr.net/npm/howler@2.2.1/howler.min.js"></script>
-
     <script>
-        if ("mediaSession" in navigator) {
-            navigator.mediaSession.setActionHandler("previoustrack", () => changeStation(-1));
-            navigator.mediaSession.setActionHandler("nexttrack", () => changeStation(1));
-        }
 
-        let currentStationIndex = 0;
-        const stations = document.querySelectorAll(".station-card");
+if ("mediaSession" in navigator) {
+    navigator.mediaSession.setActionHandler("previoustrack", () => changeStation(-1));
+    navigator.mediaSession.setActionHandler("nexttrack", () => changeStation(1));
+}
 
-        function changeStation(direction) {
-            // Calculate the new index
-            currentStationIndex += direction;
-            if (currentStationIndex < 0) currentStationIndex = stations.length - 1;
-            if (currentStationIndex >= stations.length) currentStationIndex = 0;
+let currentStationIndex = 0;
+const stations = document.querySelectorAll(".station-card");
 
-            // Trigger station click event to play the next/previous station
-            stations[currentStationIndex].click();
-        }
+function changeStation(direction) {
+    // Calculate the new index
+    currentStationIndex += direction;
+    if (currentStationIndex < 0) currentStationIndex = stations.length - 1;
+    if (currentStationIndex >= stations.length) currentStationIndex = 0;
 
-        function updateMediaSession(stationName, stationLogo) {
-            if ("mediaSession" in navigator) {
-                navigator.mediaSession.metadata = new MediaMetadata({
-                    title: stationName,
-                    artist: "Live Radio",
-                    artwork: [{ src: stationLogo, sizes: "512x512", type: "image/png" }]
-                });
-            }
-        }
+    // Trigger station click event to play the next/previous station
+    stations[currentStationIndex].click();
+}
 
-        // Function to update the og:image tag dynamically
-        function updateOGImage(newImageUrl) {
-            let metaTag = document.querySelector('meta[property="og:image"]');
-            
-            // If the og:image meta tag doesn't exist, create one
-            if (!metaTag) {
-                metaTag = document.createElement('meta');
-                metaTag.setAttribute('property', 'og:image');
-                document.head.appendChild(metaTag);
-            }
-            
-            // Update the content attribute with the new image URL
-            metaTag.setAttribute('content', newImageUrl);
-        }
+function updateMediaSession(stationName, stationLogo) {
+    if ("mediaSession" in navigator) {
+        navigator.mediaSession.metadata = new MediaMetadata({
+            title: stationName,
+            artist: "Live Radio",
+            artwork: [{ src: stationLogo, sizes: "512x512", type: "image/png" }]
+        });
+    }
+}
 
-        const flagMap = {
-            "BAH": "🇧🇭",
-            "UAE": "🇦🇪",
-            "IND": "🇮🇳",
-            "SL": "🇱🇰"
-        };
+// Function to update the og:image tag dynamically
+function updateOGImage(newImageUrl) {
+    let metaTag = document.querySelector('meta[property="og:image"]');
+    
+    // If the og:image meta tag doesn't exist, create one
+    if (!metaTag) {
+        metaTag = document.createElement('meta');
+        metaTag.setAttribute('property', 'og:image');
+        document.head.appendChild(metaTag);
+    }
+    
+    // Update the content attribute with the new image URL
+    metaTag.setAttribute('content', newImageUrl);
+}
 
+const flagMap = {
+    "BAH": "🇧🇭",
+    "UAE": "🇦🇪",
+    "IND": "🇮🇳",
+    "SL": "🇱🇰"
+};
         document.addEventListener("DOMContentLoaded", function () {
             const audio = document.getElementById("radioPlayer");
             let currentStation = null;
@@ -215,39 +217,83 @@
 
             document.querySelectorAll(".station-card").forEach((card, index) => {
                 const icon = card.querySelector(".icon-overlay");
-                const status = card.querySelector(".status-text");
+                const status = document.getElementById(`status${index + 1}`);
 
-                card.addEventListener("click", () => {
-                    if (currentStation) {
-                        currentStation.pause();
-                        currentStation.currentTime = 0;
-                    }
+                card.addEventListener("click", function () {
+                    const streamUrl = this.getAttribute("data-src");
+                    const stationName = this.getAttribute("data-name");
+		    const region = this.getAttribute("data-region");
+		    const flagEmoji = flagMap[region] || ""; 
 
-                    // Toggle play/pause icon
-                    if (card.classList.contains("active")) {
-                        card.classList.remove("active");
-                        status.textContent = "Idle";
-                        audio.pause();
+
+let bgImage = getComputedStyle(card).backgroundImage;
+        let imageUrl = bgImage.match(/url\(["']?(.*?)["']?\)/);
+
+if (imageUrl) {
+            // Set the coverArt image source to the background image of the clicked card
+            document.getElementById('coverArt').src = imageUrl[1];
+// Update Cover Art
+updateOGImage(imageUrl[1]);
+        }
+		    
+
+//update now playing
+        	    document.getElementById("nowPlayingText").textContent = `Now Playing: ${stationName}`;
+currentStationIndex = index; // Update current station index
+                    if (currentStation === streamUrl) {
+                        if (!audio.paused) {
+                            audio.pause();
+                            icon.textContent = "▶";
+                            status.textContent = "Paused";
+                            document.title = defaultTitle;
+                        } else {
+                            audio.play();
+                            icon.textContent = "⏸";
+                            status.textContent = "Playing";
+
+
+document.title = `🎵 ${stationName} ${flagEmoji} | Alaina Live`;
+
+			    
+
+
+                        }
                     } else {
-                        card.classList.add("active");
-                        status.textContent = "Now Playing";
-                        audio.src = card.dataset.src;
+                        if (currentCard) {
+                            currentCard.classList.remove("active");
+                            currentIcon.textContent = "▶";
+                            currentStatus.textContent = "Idle";
+                        }
+
+                        this.classList.add("active");
+                        audio.src = streamUrl;
                         audio.play();
-                        currentStation = audio;
-                        currentCard = card;
+                        icon.textContent = "⏸";
+                        status.textContent = "Buffering...";
+                        document.title = `🎵 ${stationName} ${flagEmoji} | Alaina Live`;
+
+
+                        currentStation = streamUrl;
+                        currentCard = this;
                         currentIcon = icon;
                         currentStatus = status;
-                        updateMediaSession(card.dataset.name, card.dataset.src);
-                        updateOGImage(card.dataset.src);
                     }
+                });
 
-                    // Update station's status
-                    stations.forEach(station => {
-                        if (station !== card) {
-                            station.classList.remove("active");
-                            station.querySelector(".status-text").textContent = "Idle";
-                        }
-                    });
+                audio.addEventListener("playing", function () {
+                    if (currentStatus) currentStatus.textContent = "Playing";
+                });
+
+                audio.addEventListener("waiting", function () {
+                    if (currentStatus) currentStatus.textContent = "Buffering...";
+                });
+
+                audio.addEventListener("error", function () {
+                    if (currentStatus) currentStatus.textContent = "Stream Unavailable";
+                    if (currentIcon) currentIcon.textContent = "▶";
+                    if (currentCard) currentCard.classList.remove("active");
+                    document.title = defaultTitle;
+                    currentStation = null;
                 });
             });
         });
