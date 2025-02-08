@@ -1,7 +1,7 @@
 {
   "name": "Alaina Live",
   "short_name": "AlainaLive",
-  "start_url": "/",
+  "start_url": "/alainalive/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
