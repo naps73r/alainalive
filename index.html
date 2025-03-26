@@ -1,11 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Alaina Live!</title>
-    <link rel="icon" href="favicon.png" type="image/png"> 
-    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="https://naps73r.github.io/alainalive/favicon.png" type="image/png"> 
+    <link rel="manifest" href="https://naps73r.github.io/alainalive/manifest.json">
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  color: #FFF;
+  overflow: hidden;
+}
+
+body {
+  
+}
+
+canvas#canvas {
+  display: block;
+  position: relative;
+  background: #00222B;
+  filter: blur(4px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Ensures the animation is in the background */
+}
+</style>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
         
@@ -19,7 +42,7 @@
         }
         
         .container {
-            max-width: 600px;
+            max-width: 800px;
             margin: auto;
         }
         
@@ -31,13 +54,14 @@
         
         .stations {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(7, 1fr);
             gap: 15px;
             margin-top: 20px;
         }
 
         .station-card {
             position: relative;
+            BORDER-RADIUS: 100% !important;
             width: 100%;
             padding-top: 100%;
             background-size: cover;
@@ -49,12 +73,11 @@
             justify-content: center;
             overflow: hidden;
             transition: transform 0.1s ease-in-out;
-
         }
 
         .station-card.active::after {
 
-            transform: scale(0.98);
+
 		content: "";
 		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
         }
@@ -72,8 +95,8 @@
 
         .icon-overlay {
             position: absolute;
-            right: 10px;
-            top: 10px;
+            right: 38px;
+            top: 33px;
             font-size: 1.5em;
             color: rgba(255, 255, 255, 0.8);
             z-index: 1;
@@ -83,7 +106,7 @@
             bottom: 10px;
             font-size: 0.7rem;
             position: absolute;
-            right: 10px;
+            right: 26px;
             z-index: 1;
             display: none;
         }
@@ -114,8 +137,9 @@
     box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
 }
     </style>
-</head>
+<link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin="use-credentials"><link rel="preconnect" href="https://fonts.gstatic.com/"><link rel="stylesheet" href="./testpage2_files/css2"><style>undefined</style><meta property="og:image" content="file:///C:/Users/Shaila/Downloads/894.jpg"></head>
 <body>
+<canvas id="canvas">Canvas not supported.</canvas>
     <div class="container">
         <h1>Alaina Live</h1>
 <div id="nowPlayingContainer">
@@ -297,6 +321,156 @@ document.title = `🎵 ${stationName} ${flagEmoji} | Alaina Live`;
                 });
             });
         });
+
+
+/*
+* File Name / glitteringSea.js
+* Created Date / Aug 14, 2020
+* Aurhor / Toshiya Marukubo
+* Twitter / https://twitter.com/toshiyamarukubo
+*/
+
+(function () {
+  'use strict';
+  window.addEventListener('load', function () {
+    var canvas = document.getElementById('canvas');
+
+    if (!canvas || !canvas.getContext) {
+      return false;
+    }
+
+    /********************
+      Random Number
+    ********************/
+
+    function rand(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+    
+    /********************
+      Var
+    ********************/
+
+    var ctx = canvas.getContext('2d');
+    var X = canvas.width = window.innerWidth;
+    var Y = canvas.height = window.innerHeight;
+    var mouseX = null;
+    var mouseY = null;
+    var shapeNum = 300;
+    var shapes = [];
+    var style = {
+      black: 'black',
+      white: 'white',
+      lineWidth: 4,
+    };
+
+    /********************
+      Animation
+    ********************/
+
+    window.requestAnimationFrame =
+      window.requestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.msRequestAnimationFrame ||
+      function(cb) {
+        setTimeout(cb, 17);
+      };
+
+    /********************
+      Shape
+    ********************/
+     
+    function Shape(ctx, x, y) {
+      this.ctx = ctx;
+      this.init(x, y);
+    }
+    
+    Shape.prototype.init = function(x, y) {
+      this.x = x;
+      this.y = y;
+      this.r = rand(10, 25);
+      this.ga = Math.random() * Math.random() * Math.random() * Math.random();
+      this.v = {
+        x: Math.random(),
+        y: -1
+      };
+      this.l = rand(0, 20);
+      this.sl = this.l;
+    };
+
+    Shape.prototype.updateParams = function() {
+      var ratio = this.l / this.sl;
+      //this.r *= ratio;
+      this.l -= 1;
+      if (this.l < 0) {
+        this.init(X * (Math.random() + Math.random()) / 2, rand(0, Y));
+      }
+    };
+
+    Shape.prototype.updatePosition = function() {
+      this.x += Math.random();
+      this.y += -Math.random();
+    };
+    
+    Shape.prototype.draw = function() {
+      var ctx  = this.ctx;
+      ctx.save();
+      ctx.globalCompositeOperation = 'lighter';
+      ctx.globalAlpha = this.ga;
+      //ctx.fillStyle = 'rgb(123, 252, 100)';
+      ctx.fillStyle = 'white';
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2, false);
+      ctx.fill();
+      ctx.restore();
+    };
+
+    Shape.prototype.render = function(i) {
+      this.updatePosition();
+      this.updateParams();
+      this.draw();
+    };
+
+    for (var i = 0; i < shapeNum; i++) {
+      var s = new Shape(ctx, X * (Math.random() + Math.random()) / 2, rand(0, Y));
+      shapes.push(s);
+    }
+
+    /********************
+      Render
+    ********************/
+    
+    function render() {
+      ctx.clearRect(0, 0, X, Y);
+      for (var i = 0; i < shapes.length; i++) {
+        shapes[i].render(i);
+      }
+      requestAnimationFrame(render);
+    }
+
+    render();
+
+    /********************
+      Event
+    ********************/
+    
+    function onResize() {
+      X = canvas.width = window.innerWidth;
+      Y = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', function() {
+      onResize();
+    });
+
+    window.addEventListener('mousemove', function(e) {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+    }, false);
+
+  });
+})();
+
     </script>
-</body>
-</html>
+</body></html>
