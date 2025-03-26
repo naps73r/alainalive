@@ -36,6 +36,43 @@
             margin-top: 20px;
         }
 
+
+/* For large tablets or smaller screens */
+@media (max-width: 1200px) {
+    .stations {
+        grid-template-columns: repeat(5, 1fr); /* 5 per row */
+    }
+}
+
+/* For medium-sized tablets */
+@media (max-width: 992px) {
+    .stations {
+        grid-template-columns: repeat(4, 1fr); /* 4 per row */
+    }
+}
+
+/* For small tablets or large mobile devices */
+@media (max-width: 768px) {
+    .stations {
+        grid-template-columns: repeat(3, 1fr); /* 3 per row */
+    }
+}
+
+/* For smaller mobile screens */
+@media (max-width: 576px) {
+    .stations {
+        grid-template-columns: repeat(2, 1fr); /* 2 per row */
+    }
+}
+
+/* For very small devices */
+@media (max-width: 400px) {
+    .stations {
+        grid-template-columns: repeat(1, 1fr); /* 1 per row */
+    }
+}
+
+
         .station-card {
             position: relative;
             width: 100%;
