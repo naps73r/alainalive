@@ -211,7 +211,7 @@ canvas#canvas {
             <button id="playPauseButton">▶</button>
             <button id="nextButton">⏭</button>
         </div>
-        <p id="nowPlayingText">Now Playing:</p>
+        <p id="nowPlayingText" style="padding:20px;">Now Playing:</p>
     </div>
     <div class="inlsno"> 
         <img id="coverArt" src="default-cover.jpg" alt="Cover Art">
@@ -251,7 +251,7 @@ canvas#canvas {
         </div>
     </div>
     <audio id="radioPlayer" preload="none"></audio>
-
+<script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script>
 
 if ("mediaSession" in navigator) {
@@ -305,6 +305,12 @@ const flagMap = {
 };
         document.addEventListener("DOMContentLoaded", function () {
             const audio = document.getElementById("radioPlayer");
+
+
+
+
+
+
             let currentStation = null;
             let currentCard = null;
             let currentIcon = null;
@@ -342,11 +348,12 @@ currentStationIndex = index; // Update current station index
                             icon.textContent = "▶";
                             status.textContent = "Paused";
                             document.title = defaultTitle;
+			    playPauseButton.textContent = "▶"; // Change to play icon
                         } else {
                             audio.play();
                             icon.textContent = "⏸";
                             status.textContent = "Playing";
-
+			    playPauseButton.textContent = "⏸"; // Change to pause icon
 
 document.title = `🎵 ${stationName} ${flagEmoji} | Alaina Live`;
 
@@ -363,6 +370,31 @@ document.title = `🎵 ${stationName} ${flagEmoji} | Alaina Live`;
 
                         this.classList.add("active");
                         audio.src = streamUrl;
+
+if (streamUrl.endsWith(".m3u8")) {
+        if (Hls.isSupported()) {
+            const hls = new Hls();
+            hls.loadSource(streamUrl);
+            hls.attachMedia(audio);
+            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                audio.play();
+            });
+        } else if (audioPlayer.canPlayType("application/vnd.apple.mpegurl")) {
+            audio.src = streamUrl;
+            audio.play();
+        } else {
+            alert("Your browser does not support M3U8 playback.");
+        }
+    } else {
+        // Normal MP3/AAC stream
+        audio.src = streamUrl;
+        audio.play();
+    }
+
+			    playPauseButton.textContent = "▶"; // Change to play icon
+
+
+
                         audio.play();
                         icon.textContent = "⏸";
                         status.textContent = "Buffering...";
@@ -378,6 +410,7 @@ document.title = `🎵 ${stationName} ${flagEmoji} | Alaina Live`;
 
                 audio.addEventListener("playing", function () {
                     if (currentStatus) currentStatus.textContent = "Playing";
+		    playPauseButton.textContent = "⏸"; // Change to pause icon
                 });
 
                 audio.addEventListener("waiting", function () {
