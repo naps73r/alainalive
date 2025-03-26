@@ -9,6 +9,25 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
         
+* {
+  margin: 0;
+  padding: 0;
+  color: #FFF;
+  overflow: hidden;
+}
+canvas#canvas {
+  display: block;
+  position: relative;
+  background: #00222B;
+  filter: blur(4px);
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1; /* Ensures the animation is in the background */
+}
+
         body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -181,6 +200,7 @@
 
 </head>
 <body>
+<canvas id="canvas">Canvas not supported.</canvas>
 <audio id="audioPlayer"></audio>
     <div class="container">
         <div class="inlsnl"> 
