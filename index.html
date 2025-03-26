@@ -1,34 +1,11 @@
-<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Welcome to Alaina Live!</title>
-    <link rel="icon" href="https://naps73r.github.io/alainalive/favicon.png" type="image/png"> 
-    <link rel="manifest" href="https://naps73r.github.io/alainalive/manifest.json">
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  color: #FFF;
-  overflow: hidden;
-}
-
-body {
-  
-}
-
-canvas#canvas {
-  display: block;
-  position: relative;
-  background: #00222B;
-  filter: blur(4px);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: -1; /* Ensures the animation is in the background */
-}
-</style>
+    <link rel="icon" href="favicon.png" type="image/png"> 
+    <link rel="manifest" href="manifest.json">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
         
@@ -42,7 +19,7 @@ canvas#canvas {
         }
         
         .container {
-            max-width: 800px;
+            max-width: 600px;
             margin: auto;
         }
         
@@ -54,55 +31,13 @@ canvas#canvas {
         
         .stations {
             display: grid;
-            grid-template-columns: repeat(7, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 15px;
             margin-top: 20px;
         }
 
-
-	    /* For large tablets or smaller screens */
-@media (max-width: 1200px) {
-    .stations {
-        grid-template-columns: repeat(5, 1fr); /* 5 per row */
-    }
-}
-
-/* For medium-sized tablets */
-@media (max-width: 992px) {
-    .stations {
-        grid-template-columns: repeat(4, 1fr); /* 4 per row */
-    }
-}
-
-/* For small tablets or large mobile devices */
-@media (max-width: 768px) {
-    .stations {
-        grid-template-columns: repeat(3, 1fr); /* 3 per row */
-    }
-}
-
-/* For smaller mobile screens */
-@media (max-width: 576px) {
-    .stations {
-        grid-template-columns: repeat(2, 1fr); /* 2 per row */
-    }
-}
-
-/* For very small devices */
-@media (max-width: 400px) {
-    .stations {
-        grid-template-columns: repeat(1, 1fr); /* 1 per row */
-    }
-}
-
-
-
-
-
-	    
         .station-card {
             position: relative;
-            BORDER-RADIUS: 100% !important;
             width: 100%;
             padding-top: 100%;
             background-size: cover;
@@ -114,11 +49,12 @@ canvas#canvas {
             justify-content: center;
             overflow: hidden;
             transition: transform 0.1s ease-in-out;
+
         }
 
         .station-card.active::after {
 
-
+            transform: scale(0.98);
 		content: "";
 		background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.5));
         }
@@ -136,8 +72,8 @@ canvas#canvas {
 
         .icon-overlay {
             position: absolute;
-            right: 38px;
-            top: 33px;
+            right: 10px;
+            top: 10px;
             font-size: 1.5em;
             color: rgba(255, 255, 255, 0.8);
             z-index: 1;
@@ -147,7 +83,7 @@ canvas#canvas {
             bottom: 10px;
             font-size: 0.7rem;
             position: absolute;
-            right: 26px;
+            right: 10px;
             z-index: 1;
             display: none;
         }
@@ -178,15 +114,51 @@ canvas#canvas {
     box-shadow: 0px 4px 10px rgba(0,0,0,0.3);
 }
     </style>
-<link rel="preconnect" href="https://fonts.googleapis.com/" crossorigin="use-credentials"><link rel="preconnect" href="https://fonts.gstatic.com/"><link rel="stylesheet" href="./testpage2_files/css2"><style>undefined</style><meta property="og:image" content="file:///C:/Users/Shaila/Downloads/894.jpg"></head>
+<style>
+#playerControls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+#playerControls button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+#playerControls button:hover {
+    transform: scale(1.2);
+}
+
+.inlsno, .inlsnl {
+    display: inline-block;
+    vertical-align: middle;
+	width:45%;
+}
+
+</style>
+
+</head>
 <body>
-<canvas id="canvas">Canvas not supported.</canvas>
+<audio id="audioPlayer"></audio>
     <div class="container">
-        <h1>Alaina Live</h1>
-<div id="nowPlayingContainer">
-    <img id="coverArt" src="default-cover.jpg" alt="Cover Art">
-    <p id="nowPlayingText">Now Playing: </p>
-</div>
+        <div class="inlsnl"> 
+<h1>Alaina Live</h1>
+        <div id="playerControls">
+            <button id="prevButton">⏮</button>
+            <button id="playPauseButton">▶</button>
+            <button id="nextButton">⏭</button>
+        </div>
+        <p id="nowPlayingText">Now Playing:</p>
+    </div>
+    <div class="inlsno"> 
+        <img id="coverArt" src="default-cover.jpg" alt="Cover Art">
+    </div>
+
         <div class="stations">
             <div class="station-card" id="station1" data-src="https://centova.aarenworld.com/proxy/894tamilfm/stream" data-region="UAE" data-name="89.4 Tamil FM">
                 <div class="icon-overlay">▶</div>
@@ -513,5 +485,27 @@ document.title = `🎵 ${stationName} ${flagEmoji} | Alaina Live`;
   });
 })();
 
+let isPlaying = false;
+const playPauseButton = document.getElementById("playPauseButton");
+const prevButton = document.getElementById("prevButton");
+const nextButton = document.getElementById("nextButton");
+const radioPlayer = document.getElementById("radioPlayer");
+
+prevButton.addEventListener("click", () => changeStation(-1));
+nextButton.addEventListener("click", () => changeStation(1));
+playPauseButton.addEventListener("click", togglePlayPause);
+
+function togglePlayPause() {
+    if (isPlaying) {
+        radioPlayer.pause();
+        playPauseButton.textContent = "▶"; // Change to play icon
+    } else {
+        radioPlayer.play();
+        playPauseButton.textContent = "⏸"; // Change to pause icon
+    }
+    isPlaying = !isPlaying;
+}
+
     </script>
-</body></html>
+</body>
+</html>
