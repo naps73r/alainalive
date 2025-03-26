@@ -50,7 +50,7 @@ canvas#canvas {
         
         .stations {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 15px;
             margin-top: 20px;
         }
@@ -59,7 +59,7 @@ canvas#canvas {
 /* For large tablets or smaller screens */
 @media (max-width: 1200px) {
     .stations {
-        grid-template-columns: repeat(5, 1fr); /* 5 per row */
+        grid-template-columns: repeat(7, 1fr); /* 5 per row */
     }
 }
 
@@ -153,9 +153,9 @@ canvas#canvas {
         #station1 { background-image: url('894.jpg'); }
         #station2 { background-image: url('1072.png'); }
         #station3 { background-image: url('1042.jpg'); }
-        #station4 { background-image: url('1061.png'); }
-        #station5 { background-image: url('shakthi.png'); }
-	#station6 { background-image: url('radio-mango.jpg'); }
+        #station4 { background-image: url('shakthi.png'); }
+	#station5 { background-image: url('1061.png'); }
+        #station6 { background-image: url('radio-mango.jpg'); }
 	#station7 { background-image: url('radio-bahrain.jpg'); }
 
 
@@ -230,14 +230,15 @@ canvas#canvas {
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status3">Idle</div>
             </div>
-            <div class="station-card" id="station4" data-src="STREAM_URL_4" data-region="BAH" data-name="Station 4">
+	    <div class="station-card" id="station4" data-src="https://mbc.thestreamtech.com:8086/index.html/stream" data-region="SL" data-name="Shakthi FM SL">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status4">Idle</div>
             </div>
-	    <div class="station-card" id="station5" data-src="https://mbc.thestreamtech.com:8086/index.html/stream" data-region="SL" data-name="Shakthi FM SL">
+            <div class="station-card" id="station5" data-src="STREAM_URL_5" data-region="BAH" data-name="Station 5">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status5">Idle</div>
             </div>
+	    
 	    <div class="station-card" id="station6" data-src="https://eu10.fastcast4u.com/clubfmuae" data-region="IND" data-name="Radio Mango Kochi">
                 <div class="icon-overlay">▶</div>
                 <div class="status-text" id="status6">Idle</div>
