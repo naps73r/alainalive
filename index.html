@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#222222">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -21,7 +21,7 @@
 }
 canvas#canvas {
   display: block;
-  position: relative;
+  position: fixed;
   background: #00222B;
   filter: blur(4px);
   position: fixed;
@@ -32,8 +32,11 @@ canvas#canvas {
   z-index: -1; /* Ensures the animation is in the background */
 }
 html, body {
-  overflow-x: hidden; /* optional */
+  margin: 0;
+  padding: 0;
+  background: transparent;
   height: 100%;
+  overscroll-behavior: none;
 }
         body {
             font-family: Arial, sans-serif;
