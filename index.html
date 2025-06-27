@@ -220,6 +220,33 @@ html, body {
 
 </head>
 <body>
+	<script>
+let deferredPrompt;
+
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault(); // Prevent the mini-infobar
+  deferredPrompt = e;
+
+  // Create install button
+  const installBtn = document.createElement('button');
+  installBtn.innerText = 'Install Alaina Live';
+  installBtn.style = 'position:fixed;bottom:20px;left:20px;padding:10px 20px;font-size:16px;z-index:999;';
+  document.body.appendChild(installBtn);
+
+  installBtn.addEventListener('click', () => {
+    installBtn.style.display = 'none'; // hide after click
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then((choiceResult) => {
+      if (choiceResult.outcome === 'accepted') {
+        console.log('User accepted the PWA install');
+      } else {
+        console.log('User dismissed the PWA install');
+      }
+      deferredPrompt = null;
+    });
+  });
+});
+</script>
 <canvas id="canvas">Canvas not supported.</canvas>
 <audio id="audioPlayer"></audio>
     <div class="container">
