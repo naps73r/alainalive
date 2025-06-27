@@ -230,7 +230,8 @@ html, body {
             <button id="playPauseButton">▶</button>
             <button id="nextButton">⏭</button>
         </div>
-        <p id="nowPlayingText" style="padding:20px;">Now Playing:</p>
+	<p id="nowPlayingTextHeader" style="padding-bottom:5px;">Now Playing:</p>
+        <p id="nowPlayingText" style="padding-bottom:20px;">Alaina Ready!</p>
     </div>
     <div class="inlsno"> 
         <img id="coverArt" src="default-cover.jpg" alt="Cover Art">
@@ -363,7 +364,7 @@ updateOGImage(imageUrl[1]);
 		    
 
 //update now playing
-        	    document.getElementById("nowPlayingText").textContent = `Now Playing: ${stationName}`;
+        	    document.getElementById("nowPlayingText").textContent = `${stationName}`;
 currentStationIndex = index; // Update current station index
                     if (currentStation === streamUrl) {
                         if (!audio.paused) {
