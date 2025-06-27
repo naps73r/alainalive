@@ -277,7 +277,13 @@ html, body {
     <audio id="radioPlayer" preload="none"></audio>
 <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <script>
-
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(reg => console.log("Service Worker registered", reg))
+      .catch(err => console.error("Service Worker registration failed", err));
+  });
+}
 if ("mediaSession" in navigator) {
     navigator.mediaSession.setActionHandler("previoustrack", () => changeStation(-1));
     navigator.mediaSession.setActionHandler("nexttrack", () => changeStation(1));
