@@ -3,8 +3,8 @@
   "short_name": "AlainaLive",
   "start_url": "/alainalive/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "background_color": "#222222",
+  "theme_color": "#222222",
   "icons": [
     {
       "src": "android-chrome-192x192.png",
